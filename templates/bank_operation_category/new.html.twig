@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New BankOperationCategory{% endblock %}
+
+{% block body %}
+    <h1>Créer une nouvelle catégorie</h1>
+
+    {{ include('bank_operation_category/_form.html.twig') }}
+
+    <a href="{{ path('bank_operation_category_index') }}">{{ 'general.form.back_to_list'|trans }}</a>
+{% endblock %}

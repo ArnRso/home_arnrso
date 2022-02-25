@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BankOperationCategory{% endblock %}
+
+{% block body %}
+    <h1>Détail de catégorie</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>{{ 'bank_operation_category.property.id'|trans }}</th>
+                <td>{{ bank_operation_category.id }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'bank_operation_category.property.label'|trans }}</th>
+                <td>{{ bank_operation_category.label }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'bank_operation_category.property.slug'|trans }}</th>
+                <td>{{ bank_operation_category.slug }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('bank_operation_category_index') }}">{{ 'general.form.back_to_list'|trans }}</a>
+
+    <a href="{{ path('bank_operation_category_edit', {'id': bank_operation_category.id}) }}">{{ 'general.form.edit'|trans }}</a>
+
+    {% include 'bank_operation/_bankOperationListing.html.twig' with {bankOperations: bank_operation_category.bankOperations} %}
+
+    {{ include('bank_operation_category/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,81 @@
+<table class="table table-hover caption-top">
+    <caption>Nombre d'opérations : {{ bankOperations.getTotalItemCount|default(bankOperations|length) }}</caption>
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Type</th>
+        <th>Label</th>
+        <th>Montant</th>
+        <th>Catégorie</th>
+        {% if not withEditForm|default(false) %}
+            <th></th>
+        {% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for bankOperation in bankOperations %}
+        <tr>
+            <td>
+                {{ bankOperation.operationDate|date('d/m/Y') }}
+            </td>
+            <td>
+                {{ bankOperation.operationKind }}
+            </td>
+            <td>
+                {{ bankOperation.label }}
+            </td>
+            <td class="{{ bankOperation.amount < 0 ? 'text-danger' : 'text-success' }}">
+                {{ bankOperation.amount|format_currency('EUR') }}
+            </td>
+            <td>
+                {% if bankOperation.bankOperationCategory %}
+                    <a href="{{ path('bank_operation_category_show', {slug: bankOperation.bankOperationCategory.slug}) }}">
+                        {{ bankOperation.bankOperationCategory.label }}
+                    </a>
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            {% if withEditForm|default(false) %}
+                <td>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                            data-bs-target="#edit-{{ bankOperation.id }}">
+                        <i class="fas fa-pen"></i>
+                    </button>
+                </td>
+            {% endif %}
+        </tr>
+        {% if withEditForm|default(false) %}
+            <div
+                    aria-hidden="true"
+                    aria-labelledby="exampleModalLabel"
+                    class="modal fade"
+                    data-bs-backdrop="static"
+                    data-bs-keyboard="false"
+                    id="edit-{{ bankOperation.id }}"
+                    tabindex="-1"
+            >
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">{{ bankOperation.label }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        {{ form_start(bankOperationForms[bankOperation.id]) }}
+                        <div class="modal-body">
+                            {{ form_row(bankOperationForms[bankOperation.id].affectedBudget) }}
+                            {{ form_row(bankOperationForms[bankOperation.id].bankOperationCategory) }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                        {{ form_end(bankOperationForms[bankOperation.id]) }}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BankOperationCategory index{% endblock %}
+
+{% block body %}
+    <h1>BankOperationCategory index</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>{{ 'bank_operation_category.property.id'|trans }}</th>
+            <th>{{ 'bank_operation_category.property.label'|trans }}</th>
+            <th>{{ 'bank_operation_category.property.slug'|trans }}</th>
+            <th>{{ 'general.form.actions'|trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for bank_operation_category in bank_operation_categories %}
+            <tr>
+                <td>{{ bank_operation_category.id }}</td>
+                <td>{{ bank_operation_category.label }}</td>
+                <td>{{ bank_operation_category.slug }}</td>
+                <td>
+                    <a href="{{ path('bank_operation_category_show', {'slug': bank_operation_category.slug}) }}">{{ 'general.form.show'|trans }}</a>
+                    <a href="{{ path('bank_operation_category_edit', {'slug': bank_operation_category.slug}) }}">{{ 'general.form.edit'|trans }}</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('bank_operation_category_new') }}">{{ 'general.form.new'|trans }}</a>
+{% endblock %}

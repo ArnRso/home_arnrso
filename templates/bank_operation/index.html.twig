@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BudgetController!{% endblock %}
+
+{% block body %}
+    <p>
+        <a class="btn btn-primary" href="{{ path('bank_operation_upload') }}">Uploader un fichier
+        </a>
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#searchForm"
+                aria-expanded="false" aria-controls="searchForm">Rechercher une opération
+        </button>
+    </p>
+    <div class="collapse{{ searchValues is not empty ? ' show' : '' }}" id="searchForm">
+        {{ form_start(searchForm, {
+            'attr': {
+                'id': 'searchForm'
+            }
+        }) }}
+
+        <div class="row">
+            <div class="col col-tablet-3">
+                {{ form_row(searchForm.label) }}
+            </div>
+            <div class="col col-tablet-3">
+                {{ form_row(searchForm.sign) }}
+            </div>
+            <div class="col col-tablet-3">
+                {{ form_row(searchForm.category) }}
+            </div>
+            <div class="col col-tablet-3">
+                {{ form_row(searchForm.dateFrom) }}
+            </div>
+            <div class="col col-tablet-3">
+                {{ form_row(searchForm.dateTo) }}
+            </div>
+        </div>
+        <p class="text-end">
+            <a class="btn btn-outline-primary" href="{{ path('bank_operation_index') }}">Réinitialiser</a>
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+        </p>
+        {{ form_end(searchForm) }}
+    </div>
+
+
+    <div id="innerListing">
+        {% if bankOperations|length %}
+            <div class="navigation">
+                {{ knp_pagination_render(bankOperations) }}
+            </div>
+            {% include 'bank_operation/_bankOperationListing.html.twig' with {withEditForm: true} %}
+            <div class="navigation">
+                {{ knp_pagination_render(bankOperations) }}
+            </div>
+        {% else %}
+            <div class="alert alert-danger" role="alert">
+                Aucune opération sauvegardée.
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
